@@ -3,6 +3,8 @@ server:
   
 spring:
   cloud:
+    config:
+      fail-fast: false
     consul:
       discovery:
         instanceId: ms-service-a
