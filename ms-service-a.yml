@@ -10,4 +10,4 @@ spring:
 service:
   b:
     url: http://ms-service-b/service/b
-    convertUrl: http://ms-service-b/convert
+    convertUrl: http://ms-service-b/convert?from={from}&to={to}&amount={amount}
