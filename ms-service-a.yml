@@ -11,3 +11,23 @@ service:
   b:
     url: http://ms-service-b/service/b
     convertUrl: http://ms-service-b/convert?from={from}&to={to}&amount={amount}
+
+resilience4j.circuitbreaker:
+configs:
+    default:
+        registerHealthIndicator: true
+        # Failure rate threshold percentage
+        failureRateThreshold: 2
+        # Minimum number of call attempts before rate threshold percentage is checked.
+        ringBufferSizeInClosedState: 10
+        # How long to wait until switching to half open.
+        waitDurationInOpenState: 1s
+        # Number of successful requests before moving back to closed from half open.
+        ringBufferSizeInHalfOpenState: 1
+        # Exceptions that do not count towards opening the circuit.
+        ignoreExceptions:
+            # Ignore 4xx exceptions.
+            - org.springframework.web.client.HttpClientErrorException
+        instances:
+            aInformation:
+                baseConfig: default
