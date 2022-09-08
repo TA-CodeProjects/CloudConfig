@@ -46,19 +46,8 @@ spring:
         uri: lb://ms-service-a
         predicates:
         - Path=/srva/**
-        filters:
-        - RewritePath=/srva/(?<segment>.*), /$\{segment}
-        - name: CircuitBreaker
-          args:
-            name: monitor-srvA
-            fallbackUri: forward:/fallback/serviceA
       - id: ms-service-b
         uri: lb://ms-service-b
         predicates:
         - Path=/srvb/**
-        filters:
-        - RewritePath=/srvb/(?<segment>.*), /$\{segment}
-        - name: CircuitBreaker
-          args:
-            name: monitor-srvB
-            fallbackUri: forward:/fallback/serviceB
+        
