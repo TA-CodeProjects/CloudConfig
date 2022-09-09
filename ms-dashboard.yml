@@ -1,20 +1,21 @@
 server:
-  port: 8811
-  
-spring:
-  cloud:
-    consul:
-      discovery:
-        instanceId: dashboard
-        health-check-interval: 5s
-      config:
-        management: 
-          enabled: true
-hystrix:
-    dashboard:
-        proxy-stream-allow-list: '*'
+  port: '8811'
+
+
 management:
-    endpoints:
-        web:
-            exposure:
-                include: hystrix.stream
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
