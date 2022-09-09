@@ -1,5 +1,5 @@
 server:
-  port: '8080'
+  port: 8080
 
 management:
   health:
@@ -30,7 +30,7 @@ management:
         include: health, metrics, prometheus
       path-mapping:
         prometheus: metrics,info,health,prometheus
-  
+
 spring:
   cloud:
     consul:
@@ -42,12 +42,23 @@ spring:
         locator:
           enabled: true
       routes:
-      - id: ms-service-a
-        uri: lb://ms-service-a
-        predicates:
-        - Path=/srva/**
-      - id: ms-service-b
-        uri: lb://ms-service-b
-        predicates:
-        - Path=/srvb/**
-        
+        - id: ms-service-a
+          uri: lb://ms-service-a
+          predicates:
+            - Path=/srva/**
+          filters:
+            - RewritePath=/srva/(?<segment>.*), /$\{segment}
+            - name: CircuitBreaker
+              args:
+                name: monitor-srvA
+                fallbackUri: forward:/fallback/serviceA
+        - id: ms-service-b
+          uri: lb://ms-service-b
+          predicates:
+            - Path=/srvb/**
+          filters:
+            - RewritePath=/srvb/(?<segment>.*), /$\{segment}
+            - name: CircuitBreaker
+              args:
+                name: monitor-srvB
+                fallbackUri: forward:/fallback/serviceB
