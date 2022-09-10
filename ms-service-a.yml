@@ -40,7 +40,7 @@ management:
       exposure:
         include: health, metrics, prometheus
       path-mapping:
-        prometheus: metrics,info,health,prometheus
+        prometheus: prometheus
     
 
 resilience4j:
